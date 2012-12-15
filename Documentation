@@ -1,0 +1,71 @@
+# Lab 1A)
+
+> Översikt:
+Main metoden hanterar kommandoradsargumenten (Lab1A <element> <file>) och läser in heltalsobjekten från specificerad
+fil. Vid inläsningen beräknas antalet heltal i filen och arrayen dimensioneras efter detta. Arrayen innehållande
+de inlästa heltalen samt det första kommandoradsargumentet används som parametrar till sökfunktionen (search).
+
+Sökfunktionen använder mängd-klassen för att skapa en ny mängd och utnyttjar member-funktionen för att kontrollera
+om sökt element finns i mängden.
+
+> Testning:
+- Testdata:
+	- Genererade filer med längd [0, 50000] där innehållet i genererad fil är samtliga heltal i intervallet.
+	- Fil innehållande felaktiga tecken
+	- Tom fil
+
+- Lab1A
+	- Felaktiga argument: Om antal argument är felaktigt avbryts sökningen (IOException)
+						  Om arg0 inte kan representeras som int avbryts sökningen (NumberFormatException)
+						  Om arg1 inte är en korrekt sökväg till en fil avbryts sökningen (FileNotFoundException)
+	- Tom fil: Kontrollsatser retunerar false men om en array med längden 0 skickas till
+	  member och binarysearch så är low > high och -1 dvs. false retuneras.
+	- Ogiltig data: Filer innehållande flera strängar som inte kan representeras som en viss typ, i detta
+	  specialfall int genererar ett kontrollerat exception och inläsningen fortsätter.
+	
+- Binärsökning:
+	- Testfall: Dessa är testade med testdata enligt ovan och fungerar.
+		- Talet finns ej: While-satsen kommer att avbrytas efter att arrayen sökts igenom och sedan returnera -1.
+		- Talet större än alla tal: low ökas varje iteration tills low > high och sedan returneras -1.
+		- Talet mindre än alla tal: high minskas varje iteration tills low > high och sedan returneras -1.
+		- Talet mellan alla tal: Bästa fallet, finnes omedelbart då int(X.X) = int(X).
+		
+> Korrekthet:
+	- member: för varje iteration kommer listans längd att ~halveras då low/high sätts till mid (+-1) beroende
+	  om elementen till höger/vänster är större än eller mindre än det sökta elementet. I värsta fall kommer
+	  till slut kvarstående element reduceras till 1 och om detta inte är sökt element kommer low > high och
+	  -1 retuneras.
+
+> Tidskomplexitet:
+	- Lab1A				: O(N)
+	- readFile			: O(N)
+	- binarySearch		: O(log N)
+	
+	=> Tidskomplexitet för inläsningen: O(N)
+						   sökningen  : O(log N)
+
+# Lab 1B)
+
+> Översikt:
+Se beskrivning av Lab1A, skillnad är att Lab1B använder den generiska varianten av mängd-klassen vilket
+innebär att readFile retunerar Integer[] istället för den primitiva typen int[]. readFile är inte generisk
+då detta avsevärt komplicerar inläsningen.
+
+> Testning:
+- Lab1B
+	- Går endast att skapa instanser av objekt som implementerar Comparable i övrigt identisk med Lab1A.
+	
+- Binärsökning:
+	- Identisk med binärsökningen i 1A förutom att vi här använder compareTo men sålänge den
+	implementarade comparatorn följer definitionen fungerar sökningen.
+
+> Korrekthet:
+	- member identisk med den i laboration 1A med undantag för det angivet i testningen ovan.
+
+> Tidskomplexitet:
+	- Lab1B				: O(N)
+	- ReadFile			: O(N)
+	- binarySearch		: O(x log N) där x är bidraget från jämförelsen (compareTo)
+	
+	=> Tidskomplexitet för inläsningen: O(N)
+						   sökningen  : O(x log N)
